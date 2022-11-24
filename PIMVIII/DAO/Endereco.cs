@@ -1,21 +1,25 @@
-﻿using PIMVIII;
-using System;
+﻿using System;
 using System.Data.SqlClient;
+using PimVIII.Entidade;
 using System.Configuration;
 
-namespace PIMVIII
+namespace PimVIII
 {
-    public class Endereço
+    internal class Endereco
     {
-    
         string strConnection = ConfigurationManager.ConnectionStrings["CharityManagement"].ConnectionString;
-        protected internal Endereço()
+
+        public Endereco(int v)
+        {
+        }
+
+        protected internal Endereco()
         {
         }
         public Endereco consulte(int intEndereco)
-        {
+        {   // abre a conexão com o banco
             SqlConnection conexao = new(strConnection);
-            conexao.Open(); // abre a conexão com o banco
+            conexao.Open(); 
             Endereco endereco = null;
             SqlCommand cmd = new SqlCommand("SELECT * FROM ENDERECO WHERE id = " + intEndereco, conexao);
             using (var dr = cmd.ExecuteReader())

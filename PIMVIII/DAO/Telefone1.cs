@@ -1,6 +1,11 @@
-﻿namespace PIMVIII
+﻿using System;
+using System.Data.SqlClient;
+using PimVIII.Entidade;
+using System.Configuration;
+
+namespace PimVIII.Entidade
 {
-    public class Telefone
+    internal class Telefone1
     {
         string strConnection = ConfigurationManager.ConnectionStrings["CharityManagement"].ConnectionString;
 
@@ -10,11 +15,8 @@
             SqlConnection conexao = new(strConnection);
             conexao.Open();
             SqlCommand cmd = new SqlCommand($@"
-SELECT id 
-  FROM TELEFONE 
- WHERE numero = {telefone.numero}
-   and tipo = {getIdTipoTelefone(telefone.tipo)}
-   and DDD = {telefone.ddd}", conexao);
+            SELECT id   FROM TELEFONE  WHERE numero = {telefone.numero}    and tipo = {getIdTipoTelefone(telefone.tipo)}
+            and DDD = {telefone.ddd}", conexao);
             using (var dr = cmd.ExecuteReader())
                 if (dr.HasRows && dr.Read())
                     retorno = Convert.ToInt32(dr[0]);
@@ -46,10 +48,10 @@ SELECT id
             SqlConnection conexao = new(strConnection);
             conexao.Open();
             using (SqlCommand cmd = new SqlCommand(@$"
-            INSERT INTO PESSOA_TELEFONE (
+INSERT INTO PESSOA_TELEFONE (
             ID_PESSOA,
             ID_TELEFONE)
-            VALUES({IdPessoa}, 
+     VALUES({IdPessoa}, 
             {getIdTelefone(telefone)});", conexao))
                 nlinhas = cmd.ExecuteNonQuery(); // executa cmd
             conexao.Close();
@@ -94,7 +96,5 @@ SELECT id
             return retorno;
         }
 
-    }
-}
     }
 }
